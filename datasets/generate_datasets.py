@@ -1,5 +1,7 @@
+import json
 import random
 from datetime import date, timedelta
+from pathlib import Path
 
 import pandas as pd
 
@@ -96,12 +98,75 @@ def plant_defects(df):
     return df, groups
 
 
+OUT_DIR = Path(__file__).resolve().parent
+
+
+def drop_column(df):
+    return df.drop(columns=["email"])
+
+
+def rename_column(df):
+    return df.rename(columns={"customer_name": "name"})
+
+
+def change_type(df):
+    df = df.copy()
+    df["quantity"] = df["quantity"].astype(str) + " units"
+    return df
+
+
+def add_column(df):
+    df = df.copy()
+    rng = random.Random(SEED)
+    df["discount_code"] = [rng.choice(["SAVE10", "VIP20", "WELCOME5", "NONE"]) for _ in range(len(df))]
+    return df
+
+
+def combined(df):
+    return add_column(change_type(rename_column(drop_column(df))))
+
+
+def price_in_cents(df):
+    df = df.copy()
+    df["unit_price"] = (df["unit_price"] * 100).round().astype("Int64")
+    return df
+
+
+def date_day_first(df):
+    df = df.copy()
+    dates = pd.to_datetime(df["order_date"], format="%m/%d/%Y")
+    df["order_date"] = dates.dt.strftime("%d/%m/%Y")
+    return df
+
+
+def save(df, name):
+    path = OUT_DIR / f"orders_{name}.csv"
+    df.to_csv(path, index=False, lineterminator="\n")
+    print(f"Saved {path.name}: {df.shape[0]} rows, {df.shape[1]} columns")
+
+
 clean = make_clean_rows(N_CLEAN)
 messy, groups = plant_defects(clean)
 
-print("Planted defects:")
-for defect, rows in groups.items():
-    print(f"  {defect}: {len(rows)}")
-print("  exact_duplicates:", messy.duplicated().sum())
-print("Total rows:", len(messy))
-print(messy.sample(8, random_state=1).to_string())
+save(messy, "baseline")
+
+drifts = {
+    "schema_drop_column": drop_column,
+    "schema_rename_column": rename_column,
+    "schema_type_change": change_type,
+    "schema_add_column": add_column,
+    "schema_combined": combined,
+    "semantic_price_cents": price_in_cents,
+    "semantic_date_day_first": date_day_first,
+}
+for name, make_drift in drifts.items():
+    save(make_drift(messy), name)
+
+summary = {
+    "seed": SEED,
+    "total_rows": len(messy),
+    "defects": {d: clean.loc[rows, "order_id"].tolist() for d, rows in groups.items()},
+    "duplicate_order_ids": messy.loc[messy.duplicated(), "order_id"].tolist(),
+}
+(OUT_DIR / "defects_summary.json").write_text(json.dumps(summary, indent=2))
+print("Saved defects_summary.json")
