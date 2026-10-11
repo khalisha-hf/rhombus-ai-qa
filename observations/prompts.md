@@ -37,7 +37,25 @@ Keep all other columns unchanged.
 - Started: 11:21:54
 - Finished: 11:22:03 (about 9 seconds)
 - Logs: 8 transformations applied, 0 warnings, 0 errors
-- Result: Preview shows 176 rows, which matches the expected row count. Full column checks to be done with the validation script.
+- Output: downloaded as outputs/manual-run-1.csv (176 rows, 9 columns)
+- Validation: 14 passed, 1 failed
+- Failed check: "State uses the 8 codes only". 3 rows (orders 1080, 1184, 1058) had an empty state. All 3 were originally "Western Australia".
+- Root cause (from the AI-generated code in the state node): the code removes all spaces and converts to uppercase before looking up the value, so "Western Australia" becomes "WESTERNAUSTRALIA". The lookup list contains "WESTERN AUSTRALIA" (with a space, which can never match) and "WESTAUSTRALIA" (a typo), but not "WESTERNAUSTRALIA". The code uses `.map()`, which silently replaces any value not in the list with an empty value. Rhombus reported no warning or error.
 - Screenshots:
   - evidence/run1-preview.png
   - evidence/run1-logs.png
+  - evidence/run1-state-node-code.png
+
+## Prompt 2: Fix the state standardisation step
+
+- Date and time (AEDT): [fill in]
+- Mode: Pipeline
+- Reason: Fix the "Western Australia" issue found in manual run 1.
+- Credits: [before] before, [after] after
+- Prompt:
+
+```text
+In the step that standardises state, rows with "Western Australia" end up with an empty state. They should become "WA". Fix this step so that every full state name maps to its code. If a value cannot be mapped, keep the original value instead of replacing it with an empty value. Do not change any other step.
+```
+
+- What the AI did:
