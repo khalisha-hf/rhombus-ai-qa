@@ -4,9 +4,10 @@ Every pipeline step was built with the Rhombus AI builder only. No nodes were ad
 
 ## Prompt 1: Build the cleaning pipeline
 
-- Date and time (AEDT):
+- Date and time (AEDT): [date and time you sent the prompt]
 - Mode: Pipeline
 - Context attached: input/orders.csv
+- Credits: 39 before, 34 after (this prompt cost 5 credits)
 - Prompt:
 
 ```text
@@ -24,5 +25,19 @@ Build a cleaning pipeline for the attached file input/orders.csv. Apply these st
 Keep all other columns unchanged.
 ```
 
-- What the AI did:
-- Screenshot: evidence/
+- What the AI did: Built 9 nodes in 1m 23s. One Data Input node (orders_raw) and 8 Custom nodes, one per rule, in the requested order: orders_deduped, orders_clean_name, orders_clean_state, orders_valid_qty, orders_valid_price, orders_email_checked, orders_date_converted, orders_cleaned. Each Custom node contains AI-written Python (pandas) code. Some nodes check that required columns exist and raise an error if they are missing (for example, the line_total node checks for quantity and unit_price).
+- Screenshots:
+  - evidence/prompt1-canvas.png
+  - evidence/prompt1-ai-reply.png
+  - evidence/prompt1-line-total-code.png
+
+## Manual run 1 (baseline input, before scheduling)
+
+- Date (AEDT): [date of the run]
+- Started: 11:21:54
+- Finished: 11:22:03 (about 9 seconds)
+- Logs: 8 transformations applied, 0 warnings, 0 errors
+- Result: Preview shows 176 rows, which matches the expected row count. Full column checks to be done with the validation script.
+- Screenshots:
+  - evidence/run1-preview.png
+  - evidence/run1-logs.png
