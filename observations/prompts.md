@@ -103,3 +103,18 @@ The current code does not follow the prompt. "Western Australia" still becomes a
 - Output: outputs/manual-run-3.csv
 - Validation: 15 passed, 0 failed
 - Comparison with manual run 2: same shape (176 x 9). Exactly 3 cells changed, all in the state column: orders 1080, 1184 and 1058 changed from empty to WA. No other cells changed.
+
+## GCS destination setup
+
+- Date (AEDT): 11 Oct 2026
+- Added a Data Output node by hand and connected it to the last Custom node. This is configuration, not a data transformation, and saved 5 AI credits.
+- Created a Google Cloud Storage destination: bucket khf-rhombus-output (us-central1), service account rhombus-destination with a custom role containing only storage.objects.create and storage.objects.delete, granted on the bucket only.
+- Verification succeeded with only those 2 permissions. The in-app dialog lists storage.buckets.get, storage.objects.create, storage.objects.get and storage.objects.list, and says they are typically granted by Storage Admin. The Rhombus docs list only create (plus delete recommended) and advise against Storage Admin. The docs were correct.
+- The new destination was not selected automatically. Export format CSV, custom filename orders_cleaned.
+- Output file names end with a timestamp in milliseconds (for example orders_cleaned_1791696510449.csv), which is not a readable date.
+
+## Determinism check (baseline input, fixed pipeline)
+
+- Outputs compared: outputs/manual-run-3.csv (downloaded from Rhombus), outputs/gcs-run-a.csv (RhombusAI_output_1791696488611.csv from GCS) and outputs/gcs-run-b.csv (orders_cleaned_1791696510449.csv from GCS)
+- md5sum: all three identical (741c5d0e2abdf7b52010b1bdc62475d1)
+- Validation of the GCS output: 15 passed, 0 failed
