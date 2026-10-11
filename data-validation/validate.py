@@ -26,6 +26,9 @@ def run_checks(df):
           f"missing={sorted(EXPECTED_COLUMNS - cols)}, extra={sorted(cols - EXPECTED_COLUMNS)}")
     check("Row count", len(df) == EXPECTED_ROWS, f"expected {EXPECTED_ROWS}, got {len(df)}")
     check("No duplicate rows", not df.duplicated().any(), f"{df.duplicated().sum()} duplicates")
+    if "order_id" in cols:
+        repeated = int(df["order_id"].duplicated().sum())
+        check("order_id is unique", repeated == 0, f"{repeated} repeated order_ids")
 
     if not EXPECTED_COLUMNS.issubset(cols):
         check("Rule checks", False, "skipped because required columns are missing")
