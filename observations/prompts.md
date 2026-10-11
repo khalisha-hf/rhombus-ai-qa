@@ -51,11 +51,20 @@ Keep all other columns unchanged.
 - Date and time (AEDT): [fill in]
 - Mode: Pipeline
 - Reason: Fix the "Western Australia" issue found in manual run 1.
-- Credits: [before] before, [after] after
 - Prompt:
 
 ```text
 In the step that standardises state, rows with "Western Australia" end up with an empty state. They should become "WA". Fix this step so that every full state name maps to its code. If a value cannot be mapped, keep the original value instead of replacing it with an empty value. Do not change any other step.
 ```
 
-- What the AI did:
+- What the AI did: Worked for 11s and replied that the compile succeeded and orders_clean_state was patched. Checking the node showed that only the node's prompt was updated (it now maps "Western Australia" to "WA" and says to keep unmatched values). The node's code was unchanged: it still had "WESTAUSTRALIA" and still used .map() without keeping unmatched values.
+- Credits: 34 before, 29 after (5 credits)
+
+## Manual run 2 (after prompt 2)
+
+- Started: 01:57:10 PM
+- Finished: 01:57:17 PM (about 7 seconds)
+- Logs: 8 transformations applied, 0 warnings, 0 errors
+- Output: outputs/manual-run-2.csv
+- Validation: 14 passed, 1 failed. The same 3 rows still had an empty state. The fix reported by the chatbot did not take effect.
+- Determinism check: md5sum of manual-run-1.csv and manual-run-2.csv are identical (037203a69c90fdd322aaf36909c6c9e0). Same input and same code gave byte-identical output, which also confirms the reported fix had no effect.
