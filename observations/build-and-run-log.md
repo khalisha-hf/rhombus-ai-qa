@@ -1,13 +1,15 @@
-# AI builder prompt log
+# Pipeline build and run log
 
-Every pipeline step was built with the Rhombus AI builder only. No nodes were added or edited by hand. One node's code was later rebuilt with Rhombus's "Regenerate Code" feature, which is also AI-generated (see below).
+Every transformation step was built with the Rhombus AI builder only. No transformation nodes were added or edited by hand. Two exceptions, both explained below: the Data Output node was added by hand (configuration only, no data transformation), and one node's code was rebuilt with Rhombus's "Regenerate Code" feature, which is also AI-generated.
+
+All times are AEDT (UTC+11).
 
 ## Prompt 1: Build the cleaning pipeline
 
-- Date and time (AEDT): 9 Oct 2026, about 6:50 PM
+- Date and time: 9 Oct 2026, about 6:50 PM
 - Mode: Pipeline
 - Context attached: input/orders.csv
-- Credits: 39 before, 34 after (this prompt cost 5 credits)
+- Credits: 39 before, 34 after (5 credits)
 - Prompt:
 
 ```text
@@ -33,7 +35,7 @@ Keep all other columns unchanged.
 
 ## Manual run 1 (baseline input, before scheduling)
 
-- Date (AEDT): 11 Oct 2026
+- Date: 11 Oct 2026
 - Started: 11:21:54 AM
 - Finished: 11:22:03 AM (about 9 seconds)
 - Logs: 8 transformations applied, 0 warnings, 0 errors
@@ -49,23 +51,23 @@ Keep all other columns unchanged.
 
 ## Prompt 2: Fix the state standardisation step
 
-- Date and time (AEDT): 11 Oct 2026, about 1:54 PM 
+- Date and time: 11 Oct 2026, about 1:54 PM
 - Mode: Pipeline
 - Reason: Fix the "Western Australia" issue found in manual run 1.
+- Credits: 34 before, 29 after (5 credits)
 - Prompt:
 
 ```text
 In the step that standardises state, rows with "Western Australia" end up with an empty state. They should become "WA". Fix this step so that every full state name maps to its code. If a value cannot be mapped, keep the original value instead of replacing it with an empty value. Do not change any other step.
 ```
 
-- What the AI did: Worked for 11s and replied that the compile succeeded and orders_clean_state was patched. Checking the node showed that only the node's prompt was updated (it now maps "Western Australia" to "WA" and says to keep unmatched values). The node's code was unchanged: it still had "WESTAUSTRALIA" and still used .map() without keeping unmatched values.
-- Credits: 34 before, 29 after (5 credits)
+- What the AI did: Worked for 11s and replied that the compile succeeded and orders_clean_state was patched. Checking the node showed that only the node's prompt was updated (it now maps "Western Australia" to "WA" and says to keep unmatched values). The node's code was unchanged: it still had "WESTAUSTRALIA" and still used `.map()` without keeping unmatched values.
 
 ## Manual run 2 (after prompt 2)
 
-- Date (AEDT): 11 Oct 2026
-- Started: 01:57:10 PM
-- Finished: 01:57:17 PM (about 7 seconds)
+- Date: 11 Oct 2026
+- Started: 1:57:10 PM
+- Finished: 1:57:17 PM (about 7 seconds)
 - Logs: 8 transformations applied, 0 warnings, 0 errors
 - Output: outputs/manual-run-2.csv
 - Validation: 14 passed, 1 failed. The same 3 rows still had an empty state. The fix reported by the chatbot did not take effect.
@@ -73,32 +75,32 @@ In the step that standardises state, rows with "Western Australia" end up with a
 
 ## Regenerate with feedback (state node)
 
-- Date (AEDT): 11 Oct 2026
+- Date: 11 Oct 2026
 - How: clicked the state node, then Transform, Edit Prompt, Regenerate Code. This opens a "Regenerate With Feedback" window, and the button stays disabled until feedback is entered.
+- Credits: 29 before, 29 after (no credits used)
 - Feedback entered:
 
 ```text
 The current code does not follow the prompt. "Western Australia" still becomes an empty value, because the code removes all spaces before the lookup and the lookup list has "WESTAUSTRALIA" instead of "WESTERNAUSTRALIA". Regenerate the code so it follows the prompt: every full state name maps to its code, and any value that cannot be mapped keeps its original value instead of becoming empty.
 ```
 
-- Credits: 29 before, 29 after (no credits used)
 - Result: the new code trims only leading and trailing spaces, uses a consistent lookup list that includes "WESTERN AUSTRALIA", and keeps unmatched values with `.fillna()`.
 - Note: Regenerate Code started a full pipeline run automatically, without pressing play.
 - Screenshot: evidence/regenerate-state-node-code.png
 
 ## Automatic run after Regenerate Code (output not saved)
 
-- Date (AEDT): 11 Oct 2026
-- Started: 03:29:01 PM
-- Finished: 03:29:21 PM (about 20 seconds)
+- Date: 11 Oct 2026
+- Started: 3:29:01 PM
+- Finished: 3:29:21 PM (about 20 seconds)
 - Logs: 8 transformations applied, 0 warnings, 0 errors
 - Note: this run started automatically after Regenerate Code. Its output was not downloaded.
 
 ## Manual run 3 (after Regenerate Code)
 
-- Date (AEDT): 11 Oct 2026
-- Started: 03:30:52 PM
-- Finished: 03:31:00 PM (about 8 seconds)
+- Date: 11 Oct 2026
+- Started: 3:30:52 PM
+- Finished: 3:31:00 PM (about 8 seconds)
 - Logs: 8 transformations applied, 0 warnings, 0 errors
 - Output: outputs/manual-run-3.csv
 - Validation: 15 passed, 0 failed
@@ -106,15 +108,34 @@ The current code does not follow the prompt. "Western Australia" still becomes a
 
 ## GCS destination setup
 
-- Date (AEDT): 11 Oct 2026
+- Date: 11 Oct 2026
 - Added a Data Output node by hand and connected it to the last Custom node. This is configuration, not a data transformation, and saved 5 AI credits.
 - Created a Google Cloud Storage destination: bucket khf-rhombus-output (us-central1), service account rhombus-destination with a custom role containing only storage.objects.create and storage.objects.delete, granted on the bucket only.
 - Verification succeeded with only those 2 permissions. The in-app dialog lists storage.buckets.get, storage.objects.create, storage.objects.get and storage.objects.list, and says they are typically granted by Storage Admin. The Rhombus docs list only create (plus delete recommended) and advise against Storage Admin. The docs were correct.
 - The new destination was not selected automatically. Export format CSV, custom filename orders_cleaned.
 - Output file names end with a timestamp in milliseconds (for example orders_cleaned_1791696510449.csv), which is not a readable date.
+- Files are stored with the content type application/octet-stream instead of text/csv.
 
 ## Determinism check (baseline input, fixed pipeline)
 
 - Outputs compared: outputs/manual-run-3.csv (downloaded from Rhombus), outputs/gcs-run-a.csv (RhombusAI_output_1791696488611.csv from GCS) and outputs/gcs-run-b.csv (orders_cleaned_1791696510449.csv from GCS)
 - md5sum: all three identical (741c5d0e2abdf7b52010b1bdc62475d1)
 - Validation of the GCS output: 15 passed, 0 failed
+
+## Schedule
+
+- Date: 11 Oct 2026
+- Name: Schedule for etl-amzn-main
+- Frequency: Custom cron */15 * * * * (every 15 minutes)
+- Options available: Hourly, Daily, Weekly, Monthly, Custom (cron). Daily shows a time field with no timezone shown.
+- Notify on failure: on
+- The schedule list shows status (Active), next run time, run history, a notification bell, and an on/off toggle.
+
+## Baseline scheduled run (official baseline)
+
+- Execution: #17842
+- Started: 11 Oct 2026, 4:45:15 PM (Executions view). Duration 8.8s, status Success, all 10 nodes completed.
+- Output: orders_cleaned_1791697520863.csv in GCS (created 4:45:22 PM), saved as outputs/scheduled-baseline.csv
+- Validation: 15 passed, 0 failed
+- md5sum identical to manual-run-3.csv (741c5d0e2abdf7b52010b1bdc62475d1)
+- Note: scheduled runs do not appear in the Logs panel. They only appear in the schedule's Executions view, which shows status, failed node, duration and completed nodes, and can be exported as CSV. The Executions view shows dates day-first (11/10/2026), which could be read as 10 November in some countries.
