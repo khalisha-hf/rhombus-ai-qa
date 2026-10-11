@@ -1,10 +1,10 @@
 # AI builder prompt log
 
-Every pipeline step was built with the Rhombus AI builder only. No nodes were added or edited by hand.
+Every pipeline step was built with the Rhombus AI builder only. No nodes were added or edited by hand. One node's code was later rebuilt with Rhombus's "Regenerate Code" feature, which is also AI-generated (see below).
 
 ## Prompt 1: Build the cleaning pipeline
 
-- Date and time (AEDT): [date and time you sent the prompt]
+- Date and time (AEDT): 9 Oct 2026, about 6:50 PM
 - Mode: Pipeline
 - Context attached: input/orders.csv
 - Credits: 39 before, 34 after (this prompt cost 5 credits)
@@ -33,14 +33,15 @@ Keep all other columns unchanged.
 
 ## Manual run 1 (baseline input, before scheduling)
 
-- Date (AEDT): [date of the run]
-- Started: 11:21:54
-- Finished: 11:22:03 (about 9 seconds)
+- Date (AEDT): 11 Oct 2026
+- Started: 11:21:54 AM
+- Finished: 11:22:03 AM (about 9 seconds)
 - Logs: 8 transformations applied, 0 warnings, 0 errors
-- Output: downloaded as outputs/manual-run-1.csv (176 rows, 9 columns)
+- Output: outputs/manual-run-1.csv (176 rows, 9 columns)
 - Validation: 14 passed, 1 failed
 - Failed check: "State uses the 8 codes only". 3 rows (orders 1080, 1184, 1058) had an empty state. All 3 were originally "Western Australia".
 - Root cause (from the AI-generated code in the state node): the code removes all spaces and converts to uppercase before looking up the value, so "Western Australia" becomes "WESTERNAUSTRALIA". The lookup list contains "WESTERN AUSTRALIA" (with a space, which can never match) and "WESTAUSTRALIA" (a typo), but not "WESTERNAUSTRALIA". The code uses `.map()`, which silently replaces any value not in the list with an empty value. Rhombus reported no warning or error.
+- Contributing factor: the prompt said "Remove spaces", which the AI took to mean removing all spaces, not only leading and trailing ones.
 - Screenshots:
   - evidence/run1-preview.png
   - evidence/run1-logs.png
@@ -48,7 +49,7 @@ Keep all other columns unchanged.
 
 ## Prompt 2: Fix the state standardisation step
 
-- Date and time (AEDT): [fill in]
+- Date and time (AEDT): 11 Oct 2026, about 1:54 PM 
 - Mode: Pipeline
 - Reason: Fix the "Western Australia" issue found in manual run 1.
 - Prompt:
@@ -62,9 +63,43 @@ In the step that standardises state, rows with "Western Australia" end up with a
 
 ## Manual run 2 (after prompt 2)
 
+- Date (AEDT): 11 Oct 2026
 - Started: 01:57:10 PM
 - Finished: 01:57:17 PM (about 7 seconds)
 - Logs: 8 transformations applied, 0 warnings, 0 errors
 - Output: outputs/manual-run-2.csv
 - Validation: 14 passed, 1 failed. The same 3 rows still had an empty state. The fix reported by the chatbot did not take effect.
 - Determinism check: md5sum of manual-run-1.csv and manual-run-2.csv are identical (037203a69c90fdd322aaf36909c6c9e0). Same input and same code gave byte-identical output, which also confirms the reported fix had no effect.
+
+## Regenerate with feedback (state node)
+
+- Date (AEDT): 11 Oct 2026
+- How: clicked the state node, then Transform, Edit Prompt, Regenerate Code. This opens a "Regenerate With Feedback" window, and the button stays disabled until feedback is entered.
+- Feedback entered:
+
+```text
+The current code does not follow the prompt. "Western Australia" still becomes an empty value, because the code removes all spaces before the lookup and the lookup list has "WESTAUSTRALIA" instead of "WESTERNAUSTRALIA". Regenerate the code so it follows the prompt: every full state name maps to its code, and any value that cannot be mapped keeps its original value instead of becoming empty.
+```
+
+- Credits: 29 before, 29 after (no credits used)
+- Result: the new code trims only leading and trailing spaces, uses a consistent lookup list that includes "WESTERN AUSTRALIA", and keeps unmatched values with `.fillna()`.
+- Note: Regenerate Code started a full pipeline run automatically, without pressing play.
+- Screenshot: evidence/regenerate-state-node-code.png
+
+## Automatic run after Regenerate Code (output not saved)
+
+- Date (AEDT): 11 Oct 2026
+- Started: 03:29:01 PM
+- Finished: 03:29:21 PM (about 20 seconds)
+- Logs: 8 transformations applied, 0 warnings, 0 errors
+- Note: this run started automatically after Regenerate Code. Its output was not downloaded.
+
+## Manual run 3 (after Regenerate Code)
+
+- Date (AEDT): 11 Oct 2026
+- Started: 03:30:52 PM
+- Finished: 03:31:00 PM (about 8 seconds)
+- Logs: 8 transformations applied, 0 warnings, 0 errors
+- Output: outputs/manual-run-3.csv
+- Validation: 15 passed, 0 failed
+- Comparison with manual run 2: same shape (176 x 9). Exactly 3 cells changed, all in the state column: orders 1080, 1184 and 1058 changed from empty to WA. No other cells changed.
