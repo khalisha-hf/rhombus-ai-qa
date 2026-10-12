@@ -1,0 +1,923 @@
+Execution ID,Trigger,Started At,Duration,Status,Nodes Completed,Error Message
+"17984","Schedule for etl-amzn-main","12/10/2026, 3:00:14 pm","8.6s","Success","10",""
+"17978","Schedule for etl-amzn-main","12/10/2026, 2:45:12 pm","5.1s","Failure","2","LLM execution failed (code_sha=90c4a09a9b69): 'customer_name'
+--- Generated code ---
+import pandas as pd
+import numpy as np
+def _safe_to_timedelta_wrapper(arg, *args, **kwargs):
+    try:
+        arg_series = pd.Series(arg)
+    except Exception:
+        arg_series = arg
+    try:
+        arg_series = pd.Series(arg_series)
+    except Exception:
+        pass
+    try:
+        arg_series = arg_series.astype('object')
+        arg_series = arg_series.replace({pd.NA: np.nan})
+        arg_series = arg_series.where(~arg_series.isna(), np.nan)
+        if hasattr(arg_series, 'dt') and str(arg_series.dtype).startswith('datetime64'):
+            arg_series = pd.to_datetime(arg_series, errors='coerce') - pd.Timestamp('1970-01-01')
+    except Exception:
+        pass
+    return pd.to_timedelta(arg_series, *args, **kwargs)
+# Start with input dataframe
+output_df = input_df_1.copy()
+
+# Strip leading/trailing whitespace and convert to title case
+output_df['customer_name'] = output_df['customer_name'].str.strip().str.title()
+
+# Build output mask: mark customer_name column as True (modified), others as False
+output_mask = input_mask_1.copy()
+output_mask['customer_name'] = True
+for col in output_df.columns:
+    if col != 'customer_name':
+        output_mask[col] = False
+--- Traceback ---
+Traceback (most recent call last):
+  File ""/usr/local/lib/python3.11/site-packages/pandas/core/indexes/base.py"", line 3653, in get_loc
+    return self._engine.get_loc(casted_key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""pandas/_libs/index.pyx"", line 147, in pandas._libs.index.IndexEngine.get_loc
+  File ""pandas/_libs/index.pyx"", line 176, in pandas._libs.index.IndexEngine.get_loc
+  File ""pandas/_libs/hashtable_class_helper.pxi"", line 7080, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File ""pandas/_libs/hashtable_class_helper.pxi"", line 7088, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'customer_name'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2066, in _run_local_sandboxed
+    local_vars, code_used, err = future.result(timeout=timeout + 1)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 401, in __get_result
+    raise self._exception
+  File ""/usr/local/lib/python3.11/concurrent/futures/thread.py"", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2014, in _exec_code
+    exec(execution_code, globals_dict, globals_dict)
+  File ""<string>"", line 25, in <module>
+  File ""/usr/local/lib/python3.11/site-packages/pandas/core/frame.py"", line 3761, in __getitem__
+    indexer = self.columns.get_loc(key)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/site-packages/pandas/core/indexes/base.py"", line 3655, in get_loc
+    raise KeyError(key) from err
+KeyError: 'customer_name'
+"
+"17974","Schedule for etl-amzn-main","12/10/2026, 2:30:23 pm","7.0s","Failure","6","LLM execution failed (code_sha=33462c180a52): Column 'email' does not exist in target_df!
+--- Generated code ---
+import pandas as pd
+import numpy as np
+def _safe_to_timedelta_wrapper(arg, *args, **kwargs):
+    try:
+        arg_series = pd.Series(arg)
+    except Exception:
+        arg_series = arg
+    try:
+        arg_series = pd.Series(arg_series)
+    except Exception:
+        pass
+    try:
+        arg_series = arg_series.astype('object')
+        arg_series = arg_series.replace({pd.NA: np.nan})
+        arg_series = arg_series.where(~arg_series.isna(), np.nan)
+        if hasattr(arg_series, 'dt') and str(arg_series.dtype).startswith('datetime64'):
+            arg_series = pd.to_datetime(arg_series, errors='coerce') - pd.Timestamp('1970-01-01')
+    except Exception:
+        pass
+    return pd.to_timedelta(arg_series, *args, **kwargs)
+import re
+
+# Define email validation regex pattern
+# Pattern breakdown:
+# ^[^@]+ - at least one character before @
+# @ - exactly one @ symbol
+# [^@]+ - at least one character after @ (the domain part)
+# \. - literal dot
+# [^@.]+ - at least one character after the dot
+# $ - end of string
+# We also need to ensure exactly one @ symbol and valid domain format
+
+def is_valid_email(email):
+    """"""
+    Validate email according to requirements:
+    - At least one character before @
+    - Exactly one @ symbol
+    - Domain part after @ contains at least one dot with characters on both sides
+    """"""
+    if pd.isna(email) or email == '':
+        return False
+    
+    # Convert to string to handle any edge cases
+    email_str = str(email).strip()
+    
+    if email_str == '' or email_str.lower() == 'none':
+        return False
+    
+    # Check for exactly one @ symbol
+    if email_str.count('@') != 1:
+        return False
+    
+    # Split by @
+    local_part, domain_part = email_str.split('@')
+    
+    # Local part must have at least one character
+    if len(local_part) < 1:
+        return False
+    
+    # Domain part must contain at least one dot with characters on both sides
+    if '.' not in domain_part:
+        return False
+    
+    # Split domain by dot
+    domain_parts = domain_part.split('.')
+    
+    # Must have at least 2 parts (before and after dot)
+    if len(domain_parts) < 2:
+        return False
+    
+    # Each part separated by dot must have at least one character
+    for part in domain_parts:
+        if len(part) < 1:
+            return False
+    
+    return True
+
+# Start with input_df_1 and mask_df
+target_df = input_df_1.copy()
+
+# Validate that email column exists
+if 'email' not in target_df.columns:
+    raise ValueError(""Column 'email' does not exist in target_df!"")
+
+# Store original email for validation
+original_email = target_df['email'].copy()
+
+# Validate each email
+email_valid = target_df['email'].apply(is_valid_email)
+
+# Replace invalid emails with null
+target_df.loc[~email_valid, 'email'] = None
+
+# Add the email_valid boolean column
+target_df['email_valid'] = email_valid
+
+# Build output_mask
+output_mask = input_mask_1.reindex(index=target_df.index, columns=target_df.columns, fill_value=False).astype(bool)
+
+# Mark the email column as modified where validation occurred
+output_mask.loc[~email_valid, 'email'] = True
+
+# Mark the new email_valid column as created
+output_mask['email_valid'] = True
+
+output_df = target_df
+--- Traceback ---
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2066, in _run_local_sandboxed
+    local_vars, code_used, err = future.result(timeout=timeout + 1)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 401, in __get_result
+    raise self._exception
+  File ""/usr/local/lib/python3.11/concurrent/futures/thread.py"", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2014, in _exec_code
+    exec(execution_code, globals_dict, globals_dict)
+  File ""<string>"", line 83, in <module>
+ValueError: Column 'email' does not exist in target_df!
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 3987, in transform
+    local_vars, last_executed_code, error = generate_and_execute_code()
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 3952, in generate_and_execute_code
+    local_vars, _, _ = self._run_local_sandboxed(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2073, in _run_local_sandboxed
+    raise RuntimeError(
+RuntimeError: LLM execution failed (code_sha=33462c180a52): Column 'email' does not exist in target_df!
+--- Generated code ---
+import pandas as pd
+import numpy as np
+def _safe_to_timedelta_wrapper(arg, *args, **kwargs):
+    try:
+        arg_series = pd.Series(arg)
+    except Exception:
+        arg_series = arg
+    try:
+        arg_series = pd.Series(arg_series)
+    except Exception:
+        pass
+    try:
+        arg_series = arg_series.astype('object')
+        arg_series = arg_series.replace({pd.NA: np.nan})
+        arg_series = arg_series.where(~arg_series.isna(), np.nan)
+        if hasattr(arg_series, 'dt') and str(arg_series.dtype).startswith('datetime64'):
+            arg_series = pd.to_datetime(arg_series, errors='coerce') - pd.Timestamp('1970-01-01')
+    except Exception:
+        pass
+    return pd.to_timedelta(arg_series, *args, **kwargs)
+import re
+
+# Define email validation regex pattern
+# Pattern breakdown:
+# ^[^@]+ - at least one character before @
+# @ - exactly one @ symbol
+# [^@]+ - at least one character after @ (the domain part)
+# \. - literal dot
+# [^@.]+ - at least one character after the dot
+# $ - end of string
+# We also need to ensure exactly one @ symbol and valid domain format
+
+def is_valid_email(email):
+    """"""
+    Validate email according to requirements:
+    - At least one character before @
+    - Exactly one @ symbol
+    - Domain part after @ contains at least one dot with characters on both sides
+    """"""
+    if pd.isna(email) or email == '':
+        return False
+    
+    # Convert to string to handle any edge cases
+    email_str = str(email).strip()
+    
+    if email_str == '' or email_str.lower() == 'none':
+        return False
+    
+    # Check for exactly one @ symbol
+    if email_str.count('@') != 1:
+        return False
+    
+    # Split by @
+    local_part, domain_part = email_str.split('@')
+    
+    # Local part must have at least one character
+    if len(local_part) < 1:
+        return False
+    
+    # Domain part must contain at least one dot with characters on both sides
+    if '.' not in domain_part:
+        return False
+    
+    # Split domain by dot
+    domain_parts = domain_part.split('.')
+    
+    # Must have at least 2 parts (before and after dot)
+    if len(domain_parts) < 2:
+        return False
+    
+    # Each part separated by dot must have at least one character
+    for part in domain_parts:
+        if len(part) < 1:
+            return False
+    
+    return True
+
+# Start with input_df_1 and mask_df
+target_df = input_df_1.copy()
+
+# Validate that email column exists
+if 'email' not in target_df.columns:
+    raise ValueError(""Column 'email' does not exist in target_df!"")
+
+# Store original email for validation
+original_email = target_df['email'].copy()
+
+# Validate each email
+email_valid = target_df['email'].apply(is_valid_email)
+
+# Replace invalid emails with null
+target_df.loc[~email_valid, 'email'] = None
+
+# Add the email_valid boolean column
+target_df['email_valid'] = email_valid
+
+# Build output_mask
+output_mask = input_mask_1.reindex(index=target_df.index, columns=target_df.columns, fill_value=False).astype(bool)
+
+# Mark the email column as modified where validation occurred
+output_mask.loc[~email_valid, 'email'] = True
+
+# Mark the new email_valid column as created
+output_mask['email_valid'] = True
+
+output_df = target_df
+--- Traceback ---
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2066, in _run_local_sandboxed
+    local_vars, code_used, err = future.result(timeout=timeout + 1)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 401, in __get_result
+    raise self._exception
+  File ""/usr/local/lib/python3.11/concurrent/futures/thread.py"", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2014, in _exec_code
+    exec(execution_code, globals_dict, globals_dict)
+  File ""<string>"", line 83, in <module>
+ValueError: Column 'email' does not exist in target_df!
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2066, in _run_local_sandboxed
+    local_vars, code_used, err = future.result(timeout=timeout + 1)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 401, in __get_result
+    raise self._exception
+  File ""/usr/local/lib/python3.11/concurrent/futures/thread.py"", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2014, in _exec_code
+    exec(execution_code, globals_dict, globals_dict)
+  File ""<string>"", line 83, in <module>
+ValueError: Column 'email' does not exist in target_df!
+"
+"17971","Schedule for etl-amzn-main","12/10/2026, 2:15:21 pm","7.4s","Failure","6","LLM execution failed (code_sha=33462c180a52): Column 'email' does not exist in target_df!
+--- Generated code ---
+import pandas as pd
+import numpy as np
+def _safe_to_timedelta_wrapper(arg, *args, **kwargs):
+    try:
+        arg_series = pd.Series(arg)
+    except Exception:
+        arg_series = arg
+    try:
+        arg_series = pd.Series(arg_series)
+    except Exception:
+        pass
+    try:
+        arg_series = arg_series.astype('object')
+        arg_series = arg_series.replace({pd.NA: np.nan})
+        arg_series = arg_series.where(~arg_series.isna(), np.nan)
+        if hasattr(arg_series, 'dt') and str(arg_series.dtype).startswith('datetime64'):
+            arg_series = pd.to_datetime(arg_series, errors='coerce') - pd.Timestamp('1970-01-01')
+    except Exception:
+        pass
+    return pd.to_timedelta(arg_series, *args, **kwargs)
+import re
+
+# Define email validation regex pattern
+# Pattern breakdown:
+# ^[^@]+ - at least one character before @
+# @ - exactly one @ symbol
+# [^@]+ - at least one character after @ (the domain part)
+# \. - literal dot
+# [^@.]+ - at least one character after the dot
+# $ - end of string
+# We also need to ensure exactly one @ symbol and valid domain format
+
+def is_valid_email(email):
+    """"""
+    Validate email according to requirements:
+    - At least one character before @
+    - Exactly one @ symbol
+    - Domain part after @ contains at least one dot with characters on both sides
+    """"""
+    if pd.isna(email) or email == '':
+        return False
+    
+    # Convert to string to handle any edge cases
+    email_str = str(email).strip()
+    
+    if email_str == '' or email_str.lower() == 'none':
+        return False
+    
+    # Check for exactly one @ symbol
+    if email_str.count('@') != 1:
+        return False
+    
+    # Split by @
+    local_part, domain_part = email_str.split('@')
+    
+    # Local part must have at least one character
+    if len(local_part) < 1:
+        return False
+    
+    # Domain part must contain at least one dot with characters on both sides
+    if '.' not in domain_part:
+        return False
+    
+    # Split domain by dot
+    domain_parts = domain_part.split('.')
+    
+    # Must have at least 2 parts (before and after dot)
+    if len(domain_parts) < 2:
+        return False
+    
+    # Each part separated by dot must have at least one character
+    for part in domain_parts:
+        if len(part) < 1:
+            return False
+    
+    return True
+
+# Start with input_df_1 and mask_df
+target_df = input_df_1.copy()
+
+# Validate that email column exists
+if 'email' not in target_df.columns:
+    raise ValueError(""Column 'email' does not exist in target_df!"")
+
+# Store original email for validation
+original_email = target_df['email'].copy()
+
+# Validate each email
+email_valid = target_df['email'].apply(is_valid_email)
+
+# Replace invalid emails with null
+target_df.loc[~email_valid, 'email'] = None
+
+# Add the email_valid boolean column
+target_df['email_valid'] = email_valid
+
+# Build output_mask
+output_mask = input_mask_1.reindex(index=target_df.index, columns=target_df.columns, fill_value=False).astype(bool)
+
+# Mark the email column as modified where validation occurred
+output_mask.loc[~email_valid, 'email'] = True
+
+# Mark the new email_valid column as created
+output_mask['email_valid'] = True
+
+output_df = target_df
+--- Traceback ---
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2066, in _run_local_sandboxed
+    local_vars, code_used, err = future.result(timeout=timeout + 1)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 401, in __get_result
+    raise self._exception
+  File ""/usr/local/lib/python3.11/concurrent/futures/thread.py"", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2014, in _exec_code
+    exec(execution_code, globals_dict, globals_dict)
+  File ""<string>"", line 83, in <module>
+ValueError: Column 'email' does not exist in target_df!
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 3987, in transform
+    local_vars, last_executed_code, error = generate_and_execute_code()
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 3952, in generate_and_execute_code
+    local_vars, _, _ = self._run_local_sandboxed(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2073, in _run_local_sandboxed
+    raise RuntimeError(
+RuntimeError: LLM execution failed (code_sha=33462c180a52): Column 'email' does not exist in target_df!
+--- Generated code ---
+import pandas as pd
+import numpy as np
+def _safe_to_timedelta_wrapper(arg, *args, **kwargs):
+    try:
+        arg_series = pd.Series(arg)
+    except Exception:
+        arg_series = arg
+    try:
+        arg_series = pd.Series(arg_series)
+    except Exception:
+        pass
+    try:
+        arg_series = arg_series.astype('object')
+        arg_series = arg_series.replace({pd.NA: np.nan})
+        arg_series = arg_series.where(~arg_series.isna(), np.nan)
+        if hasattr(arg_series, 'dt') and str(arg_series.dtype).startswith('datetime64'):
+            arg_series = pd.to_datetime(arg_series, errors='coerce') - pd.Timestamp('1970-01-01')
+    except Exception:
+        pass
+    return pd.to_timedelta(arg_series, *args, **kwargs)
+import re
+
+# Define email validation regex pattern
+# Pattern breakdown:
+# ^[^@]+ - at least one character before @
+# @ - exactly one @ symbol
+# [^@]+ - at least one character after @ (the domain part)
+# \. - literal dot
+# [^@.]+ - at least one character after the dot
+# $ - end of string
+# We also need to ensure exactly one @ symbol and valid domain format
+
+def is_valid_email(email):
+    """"""
+    Validate email according to requirements:
+    - At least one character before @
+    - Exactly one @ symbol
+    - Domain part after @ contains at least one dot with characters on both sides
+    """"""
+    if pd.isna(email) or email == '':
+        return False
+    
+    # Convert to string to handle any edge cases
+    email_str = str(email).strip()
+    
+    if email_str == '' or email_str.lower() == 'none':
+        return False
+    
+    # Check for exactly one @ symbol
+    if email_str.count('@') != 1:
+        return False
+    
+    # Split by @
+    local_part, domain_part = email_str.split('@')
+    
+    # Local part must have at least one character
+    if len(local_part) < 1:
+        return False
+    
+    # Domain part must contain at least one dot with characters on both sides
+    if '.' not in domain_part:
+        return False
+    
+    # Split domain by dot
+    domain_parts = domain_part.split('.')
+    
+    # Must have at least 2 parts (before and after dot)
+    if len(domain_parts) < 2:
+        return False
+    
+    # Each part separated by dot must have at least one character
+    for part in domain_parts:
+        if len(part) < 1:
+            return False
+    
+    return True
+
+# Start with input_df_1 and mask_df
+target_df = input_df_1.copy()
+
+# Validate that email column exists
+if 'email' not in target_df.columns:
+    raise ValueError(""Column 'email' does not exist in target_df!"")
+
+# Store original email for validation
+original_email = target_df['email'].copy()
+
+# Validate each email
+email_valid = target_df['email'].apply(is_valid_email)
+
+# Replace invalid emails with null
+target_df.loc[~email_valid, 'email'] = None
+
+# Add the email_valid boolean column
+target_df['email_valid'] = email_valid
+
+# Build output_mask
+output_mask = input_mask_1.reindex(index=target_df.index, columns=target_df.columns, fill_value=False).astype(bool)
+
+# Mark the email column as modified where validation occurred
+output_mask.loc[~email_valid, 'email'] = True
+
+# Mark the new email_valid column as created
+output_mask['email_valid'] = True
+
+output_df = target_df
+--- Traceback ---
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2066, in _run_local_sandboxed
+    local_vars, code_used, err = future.result(timeout=timeout + 1)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 401, in __get_result
+    raise self._exception
+  File ""/usr/local/lib/python3.11/concurrent/futures/thread.py"", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2014, in _exec_code
+    exec(execution_code, globals_dict, globals_dict)
+  File ""<string>"", line 83, in <module>
+ValueError: Column 'email' does not exist in target_df!
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2066, in _run_local_sandboxed
+    local_vars, code_used, err = future.result(timeout=timeout + 1)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 401, in __get_result
+    raise self._exception
+  File ""/usr/local/lib/python3.11/concurrent/futures/thread.py"", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2014, in _exec_code
+    exec(execution_code, globals_dict, globals_dict)
+  File ""<string>"", line 83, in <module>
+ValueError: Column 'email' does not exist in target_df!
+"
+"17970","Schedule for etl-amzn-main","12/10/2026, 2:00:09 pm","5.4s","Failure","6","LLM execution failed (code_sha=33462c180a52): Column 'email' does not exist in target_df!
+--- Generated code ---
+import pandas as pd
+import numpy as np
+def _safe_to_timedelta_wrapper(arg, *args, **kwargs):
+    try:
+        arg_series = pd.Series(arg)
+    except Exception:
+        arg_series = arg
+    try:
+        arg_series = pd.Series(arg_series)
+    except Exception:
+        pass
+    try:
+        arg_series = arg_series.astype('object')
+        arg_series = arg_series.replace({pd.NA: np.nan})
+        arg_series = arg_series.where(~arg_series.isna(), np.nan)
+        if hasattr(arg_series, 'dt') and str(arg_series.dtype).startswith('datetime64'):
+            arg_series = pd.to_datetime(arg_series, errors='coerce') - pd.Timestamp('1970-01-01')
+    except Exception:
+        pass
+    return pd.to_timedelta(arg_series, *args, **kwargs)
+import re
+
+# Define email validation regex pattern
+# Pattern breakdown:
+# ^[^@]+ - at least one character before @
+# @ - exactly one @ symbol
+# [^@]+ - at least one character after @ (the domain part)
+# \. - literal dot
+# [^@.]+ - at least one character after the dot
+# $ - end of string
+# We also need to ensure exactly one @ symbol and valid domain format
+
+def is_valid_email(email):
+    """"""
+    Validate email according to requirements:
+    - At least one character before @
+    - Exactly one @ symbol
+    - Domain part after @ contains at least one dot with characters on both sides
+    """"""
+    if pd.isna(email) or email == '':
+        return False
+    
+    # Convert to string to handle any edge cases
+    email_str = str(email).strip()
+    
+    if email_str == '' or email_str.lower() == 'none':
+        return False
+    
+    # Check for exactly one @ symbol
+    if email_str.count('@') != 1:
+        return False
+    
+    # Split by @
+    local_part, domain_part = email_str.split('@')
+    
+    # Local part must have at least one character
+    if len(local_part) < 1:
+        return False
+    
+    # Domain part must contain at least one dot with characters on both sides
+    if '.' not in domain_part:
+        return False
+    
+    # Split domain by dot
+    domain_parts = domain_part.split('.')
+    
+    # Must have at least 2 parts (before and after dot)
+    if len(domain_parts) < 2:
+        return False
+    
+    # Each part separated by dot must have at least one character
+    for part in domain_parts:
+        if len(part) < 1:
+            return False
+    
+    return True
+
+# Start with input_df_1 and mask_df
+target_df = input_df_1.copy()
+
+# Validate that email column exists
+if 'email' not in target_df.columns:
+    raise ValueError(""Column 'email' does not exist in target_df!"")
+
+# Store original email for validation
+original_email = target_df['email'].copy()
+
+# Validate each email
+email_valid = target_df['email'].apply(is_valid_email)
+
+# Replace invalid emails with null
+target_df.loc[~email_valid, 'email'] = None
+
+# Add the email_valid boolean column
+target_df['email_valid'] = email_valid
+
+# Build output_mask
+output_mask = input_mask_1.reindex(index=target_df.index, columns=target_df.columns, fill_value=False).astype(bool)
+
+# Mark the email column as modified where validation occurred
+output_mask.loc[~email_valid, 'email'] = True
+
+# Mark the new email_valid column as created
+output_mask['email_valid'] = True
+
+output_df = target_df
+--- Traceback ---
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2066, in _run_local_sandboxed
+    local_vars, code_used, err = future.result(timeout=timeout + 1)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 401, in __get_result
+    raise self._exception
+  File ""/usr/local/lib/python3.11/concurrent/futures/thread.py"", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2014, in _exec_code
+    exec(execution_code, globals_dict, globals_dict)
+  File ""<string>"", line 83, in <module>
+ValueError: Column 'email' does not exist in target_df!
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 3987, in transform
+    local_vars, last_executed_code, error = generate_and_execute_code()
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 3952, in generate_and_execute_code
+    local_vars, _, _ = self._run_local_sandboxed(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2073, in _run_local_sandboxed
+    raise RuntimeError(
+RuntimeError: LLM execution failed (code_sha=33462c180a52): Column 'email' does not exist in target_df!
+--- Generated code ---
+import pandas as pd
+import numpy as np
+def _safe_to_timedelta_wrapper(arg, *args, **kwargs):
+    try:
+        arg_series = pd.Series(arg)
+    except Exception:
+        arg_series = arg
+    try:
+        arg_series = pd.Series(arg_series)
+    except Exception:
+        pass
+    try:
+        arg_series = arg_series.astype('object')
+        arg_series = arg_series.replace({pd.NA: np.nan})
+        arg_series = arg_series.where(~arg_series.isna(), np.nan)
+        if hasattr(arg_series, 'dt') and str(arg_series.dtype).startswith('datetime64'):
+            arg_series = pd.to_datetime(arg_series, errors='coerce') - pd.Timestamp('1970-01-01')
+    except Exception:
+        pass
+    return pd.to_timedelta(arg_series, *args, **kwargs)
+import re
+
+# Define email validation regex pattern
+# Pattern breakdown:
+# ^[^@]+ - at least one character before @
+# @ - exactly one @ symbol
+# [^@]+ - at least one character after @ (the domain part)
+# \. - literal dot
+# [^@.]+ - at least one character after the dot
+# $ - end of string
+# We also need to ensure exactly one @ symbol and valid domain format
+
+def is_valid_email(email):
+    """"""
+    Validate email according to requirements:
+    - At least one character before @
+    - Exactly one @ symbol
+    - Domain part after @ contains at least one dot with characters on both sides
+    """"""
+    if pd.isna(email) or email == '':
+        return False
+    
+    # Convert to string to handle any edge cases
+    email_str = str(email).strip()
+    
+    if email_str == '' or email_str.lower() == 'none':
+        return False
+    
+    # Check for exactly one @ symbol
+    if email_str.count('@') != 1:
+        return False
+    
+    # Split by @
+    local_part, domain_part = email_str.split('@')
+    
+    # Local part must have at least one character
+    if len(local_part) < 1:
+        return False
+    
+    # Domain part must contain at least one dot with characters on both sides
+    if '.' not in domain_part:
+        return False
+    
+    # Split domain by dot
+    domain_parts = domain_part.split('.')
+    
+    # Must have at least 2 parts (before and after dot)
+    if len(domain_parts) < 2:
+        return False
+    
+    # Each part separated by dot must have at least one character
+    for part in domain_parts:
+        if len(part) < 1:
+            return False
+    
+    return True
+
+# Start with input_df_1 and mask_df
+target_df = input_df_1.copy()
+
+# Validate that email column exists
+if 'email' not in target_df.columns:
+    raise ValueError(""Column 'email' does not exist in target_df!"")
+
+# Store original email for validation
+original_email = target_df['email'].copy()
+
+# Validate each email
+email_valid = target_df['email'].apply(is_valid_email)
+
+# Replace invalid emails with null
+target_df.loc[~email_valid, 'email'] = None
+
+# Add the email_valid boolean column
+target_df['email_valid'] = email_valid
+
+# Build output_mask
+output_mask = input_mask_1.reindex(index=target_df.index, columns=target_df.columns, fill_value=False).astype(bool)
+
+# Mark the email column as modified where validation occurred
+output_mask.loc[~email_valid, 'email'] = True
+
+# Mark the new email_valid column as created
+output_mask['email_valid'] = True
+
+output_df = target_df
+--- Traceback ---
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2066, in _run_local_sandboxed
+    local_vars, code_used, err = future.result(timeout=timeout + 1)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 401, in __get_result
+    raise self._exception
+  File ""/usr/local/lib/python3.11/concurrent/futures/thread.py"", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2014, in _exec_code
+    exec(execution_code, globals_dict, globals_dict)
+  File ""<string>"", line 83, in <module>
+ValueError: Column 'email' does not exist in target_df!
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2066, in _run_local_sandboxed
+    local_vars, code_used, err = future.result(timeout=timeout + 1)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File ""/usr/local/lib/python3.11/concurrent/futures/_base.py"", line 401, in __get_result
+    raise self._exception
+  File ""/usr/local/lib/python3.11/concurrent/futures/thread.py"", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File ""/app/dataset/analyzer/operations/transformers/dataframe_llm_transform.py"", line 2014, in _exec_code
+    exec(execution_code, globals_dict, globals_dict)
+  File ""<string>"", line 83, in <module>
+ValueError: Column 'email' does not exist in target_df!
+"
+"17965","Schedule for etl-amzn-main","12/10/2026, 1:45:06 pm","7.6s","Success","10",""
+"17936","Schedule for etl-amzn-main","12/10/2026, 8:45:12 am","7.6s","Success","10",""
+"17842","Schedule for etl-amzn-main","11/10/2026, 4:45:15 pm","8.8s","Success","10",""

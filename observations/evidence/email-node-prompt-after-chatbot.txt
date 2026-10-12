@@ -1,0 +1,7 @@
+Validate the email column in the dataframe. First, identify the email column by finding the column whose name contains 'email' (case-insensitive). If no such column exists, raise a clear error naming the available columns.
+
+Once the email column is identified:
+- A valid email must have: at least one character before the @, exactly one @ symbol, and a domain part after the @ that contains at least one dot with characters on both sides.
+- For each row: if the value is missing/null/empty or does not match this pattern, replace the value in that column with null (NaN).
+- Add a new boolean column called email_valid that is True if the original email was valid, and False if the email was missing, empty, or invalid.
+- Keep all rows and all other columns unchanged.

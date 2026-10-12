@@ -1,0 +1,201 @@
+order_id,customer_name,email,state,order_date,quantity,unit_price
+1096,HENRY MARTIN ,henry.martin85@example.com,TAS,2026-08-08,2,255.45
+1016,Lucas Williams,,VIC,2026-09-18,1,431.25
+1031,Lucas Hall,lucas.hall53@example.com,WA,2026-08-31,2,52.98
+1159,Oscar Jones,oscar.jones49@example.com,TAS,2026-05-02,10,151.46
+1129,Ethan Johnson,ethan.johnson84@example.com,NT,2026-09-23,5,94.84
+1116,Ava Brown,ava.brown72@example.com,ACT,2026-03-02,10,300.08
+1070,Ella Johnson,ella.johnson85@example.com,VIC,2026-03-28,5,
+1171, Grace King  ,grace.king84@example.com,ACT,2026-06-04,2,74.19
+1175,Zoe Smith,zoe.smith28@example.com,NT,2026-07-09,8,475.52
+1046,Ella Wilson,ella.wilson45@example.com,VIC,2026-03-09,4,187.92
+1067,Leo Lee,leo.lee87@example.com,QLD,2026-07-14,10,286.71
+1183,Leo Martin,leo.martin96@example.com,VIC,2026-02-28,8,226.9
+1166,Oscar Hall,oscar.hall96@example.com,TAS,2026-06-01,2,236.82
+1079,Ava Walker,ava.walker31@example.com,SA,2026-05-27,6,163.26
+1187,Isla White,isla.white9@example.com,QLD,2026-03-17,5,314.04
+1178,Liam Hall,liam.hall32@example.com,QLD,2026-06-20,10,106.58
+1057,Leo Hall,leo.hall35@example.com,QLD,2026-05-08,2,194.36
+1153,Liam Wilson,liam.wilson48@example.com,ACT,2026-07-03,3,125.88
+1083,Olivia Taylor,olivia.taylor97@example.com,ACT,2026-06-02,7,271.42
+1069,Sophie White,sophie.white60@example.com,NT,2026-06-14,-5,339.44
+1125,Jack White,jack.white57@example.com,VIC,2026-05-28,8,345.9
+1017,Mia Lee,mia.lee88@example.com,ACT,2026-03-23,10,36.45
+1149,Zoe Taylor,zoe.taylor84@example.com,VIC,2026-07-23,-2,426.91
+1094,Jack White,jack.white51@example.com,WA,2026-07-12,2,298.09
+1066, Leo Taylor  ,leo.taylor90@example.com,SA,2026-07-26,9,68.01
+1061,Olivia Jones,olivia.jones23@example.com,SA,2026-05-14,1,58.66
+1085,Olivia Nguyen,,ACT,2026-06-22,3,421.05
+1068,Ruby Martin,ruby.martin39@example.com,SA,2026-01-01,4,217.79
+1126,Ruby Wilson,ruby.wilson70@example.com,NT,2026-09-14,8,44.82
+1133,Zoe Taylor,zoe.taylor99@example.com,ACT,2026-03-01,9,413.34
+1010,Chloe Lee,chloe.lee90@example.com,VIC,2026-05-17,10,319.31
+1019,Olivia Lee,olivia.lee88@example.com,SA,2026-02-28,6,60.22
+1056,Ethan King,ethan.king4@example.com,QLD,2026-07-31,6,392.28
+1076,Grace Lee,grace.lee97@example.com,NT,2026-06-12,10,408.43
+1151,Ava Brown,,VIC,2026-05-28,7,489.28
+1105,Oscar Johnson,oscar.johnson12@example.com,SA,2026-01-09,4,205.18
+1136,James Williams,james.williams57@example.com,NT,2026-05-28,2,19.29
+1138,James Nguyen,james.nguyen29@example.com,VIC,2026-02-17,8,473.8
+1165,Henry Martin,henry.martin35@example.com,Queensland,2026-09-14,5,457.45
+1077,Ella Nguyen,ella.nguyen21@example.com,NT,2026-08-17,8,133.3
+1080,James Jones,james.jones20@example.com,Western Australia,2026-03-12,7,348.51
+1125,Jack White,jack.white57@example.com,VIC,2026-05-28,8,345.9
+1039,Oscar Williams,oscar.williams38@example.com,WA,2026-04-08,1,291.69
+1025,  james hall,james.hall17@example.com,NT,2026-03-06,9,86.74
+1123,Sophie Lee,sophie.lee55@example.com,VIC,2026-04-12,9,116.28
+1186,Ruby Nguyen,ruby.nguyen63@example.com,NT,2026-02-25,2,450.14
+1030,Zoe Lee,zoe.lee28@example.com,QLD,2026-09-06,-1,290.22
+1020,Leo Williams,leo.williams1@example.com,SA,2026-08-21,9,382.17
+1144,James Nguyen,,WA,2026-08-22,4,288.04
+1087,Mia Young,mia.young24@example.com,NSW,2026-08-25,5,
+1115,Sophie Lee,sophie.lee20@example.com,QLD,2026-01-28,10,474.82
+1174,Mia King,mia.king84@example.com,VIC,2026-08-01,8,309.75
+1006,Henry White,henry.white6@example.com,NT,2026-05-16,9,66.79
+1127,Liam King,liam.king95@example.com,TAS,2026-08-10,10,128.93
+1118,Sophie Nguyen,sophie.nguyen73@example.com,NSW,2026-06-06,10,480.25
+1074,Lucas Williams,noah.smith.example.com,VIC,2026-01-03,7,113.33
+1141,Max Martin,max.martin9@example.com,SA,2026-03-11,7,173.24
+1099,Zoe White,zoe.white60@example.com,ACT,2026-09-05,10,137.86
+1173,Mia Nguyen,mia.nguyen48@example.com,act,2026-08-21,10,372.42
+1097,Isla Smith,isla.smith63@example.com,VIC,2026-08-04,7,480.59
+1170,Oscar Smith,,WA,2026-06-17,2,319.52
+1098,Grace Walker,grace.walker56@example.com,QLD,2026-03-20,9,482.91
+1032,Leo Taylor,,NT,2026-08-05,1,338.32
+1013,Isla Nguyen,isla.nguyen9@example.com,WA,2026-05-18,10,438.8
+1036,James Young,james.young12@example.com,WA,2026-01-08,3,206.17
+1120,Ethan Brown,ethan.brown71@example.com,VIC,2026-03-30,3,6.32
+1043,Max Smith,max.smith54@example.com,TAS,2026-02-11,5,106.11
+1190,  lucas nguyen,lucas.nguyen59@example.com,ACT,2026-06-23,7,366.16
+1091,Chloe Young,,QLD,2026-01-11,4,67.48
+1137,Max Hall,max.hall91@example.com,QLD,2026-05-03,5,277.67
+1052,Grace Martin,grace.martin72@example.com,NSW,2026-08-07,2,42.25
+1128,Ava Brown,ava.brown98@example.com,SA,2026-01-11,10,24.91
+1163,Liam Wilson,liam.wilson5@example.com,TAS,2026-08-14,3,49.62
+1042,Ava Lee,ava.lee52@example.com,VIC,2026-05-01,10,126.88
+1119,Noah Hall,noah.hall81@example.com,WA,2026-04-17,5,331.91
+1114,Liam Wilson,liam.wilson15@example.com,VIC,2026-09-02,7,248.41
+1027,Henry Johnson,henry.johnson58@example.com,Victoria,2026-09-22,4,116.23
+1140,Oscar Brown,oscar.brown71@example.com,QLD,2026-08-22,7,99.35
+1101,Sophie White,sophie.white44@example.com,NSW,2026-07-14,8,426.22
+1112,Liam Martin,liam.martin90@example.com,QLD,2026-05-30,8,55.78
+1003,Ella White,ella.white72@example.com,WA,2026-01-14,9,212.66
+1078,Lucas Young,lucas.young99@example.com,NT,2026-05-22,4,140.93
+1047,Ethan Johnson,ethan.johnson79@example.com,NSW,2026-06-04,9,
+1188,Sophie Martin,sophie.martin49@example.com,SA,2026-06-16,8,255.25
+1159,Oscar Jones,oscar.jones49@example.com,TAS,2026-05-02,10,151.46
+1086,Mia White,mia.white51@example.com,NSW,2026-01-14,2,323.16
+1162,Lucas Lee,lucas.lee80@example.com,SA,2026-04-08,3,315.98
+1037,Oscar Brown,oscar.brown8@example.com,QLD,2026-07-25,7,6.07
+1175,Zoe Smith,zoe.smith28@example.com,NT,2026-07-09,8,475.52
+1062,Leo Taylor,leo.taylor56@example.com,VIC,2026-06-10,7,450.25
+1023,Olivia Jones,olivia.jones40@example.com,WA,2026-07-05,1,124.23
+1142,Ella Wilson,ella.wilson37@example.com,SA,2026-01-02,10,292.06
+1102,Ethan Johnson,ethan.johnson46@example.com,SA,2026-04-19,6,143.43
+1034,Chloe Martin,,ACT,2026-08-18,3,142.88
+1012,James Brown,james.brown99@example.com,NSW,2026-06-16,4,411.79
+1078,Lucas Young,lucas.young99@example.com,NT,2026-05-22,4,140.93
+1160,Jack Smith,jack.smith36@example.com,NSW,2026-07-22,10,
+1007,Ruby Jones,ruby.jones81@example.com,TAS,2026-05-31,-5,100.18
+1028,Isla Smith,isla.smith76@example.com, WA ,2026-04-28,1,40.14
+1121,Grace Walker,grace.walker38@example.com,NSW,2026-08-29,4,147.61
+1005,Mia Brown,mia.brown14@example.com,VIC,2026-06-22,7,52.87
+1033,Noah Smith,noah.smith94@example.com,TAS,2026-07-26,2,128.08
+1143,Oscar Young,,NT,2026-03-18,6,169.56
+1146,Ruby Nguyen,ruby.nguyen64@example.com,NSW,2026-03-19,3,253.63
+1110,  ella white,ella.white13@example.com,WA,2026-05-25,5,117.6
+1145,Lucas Young,lucas.young6@example.com,TAS,2026-07-30,8,354.09
+1011,James Walker,james.walker21@example.com,NT,2026-05-06,7,138.62
+1063,Chloe Wilson,chloe.wilson91@example.com,ACT,2026-01-23,1,262.36
+1113,Olivia White,olivia.white61@example.com,NT,2026-05-26,8,173.65
+1147,Sophie Taylor,sophie.taylor57@example.com,VIC,2026-02-21,9,455.67
+1167,Ava Williams,ava.williams87@example.com,ACT,2026-04-26,9,186.06
+1001,Noah Smith,noah.smith32@example.com,WA,2026-05-21,3,369.55
+1156,Zoe Johnson,zoe.johnson86@example.com,NSW,2026-05-11,8,451.1
+1154,Leo White,@example.com,QLD,2026-04-03,2,306.7
+1071,Max Taylor,max.taylor97@example.com,WA,2026-02-17,5,116.2
+1124,Mia King,mia.king19@example.com, VIC ,2026-05-17,1,87.13
+1065,Isla White,isla.white85@example.com,VIC,2026-06-10,5,256.03
+1045,Ava Smith,ava.smith80@example.com,VIC,2026-08-23,2,271.13
+1164,Jack Taylor,jack.taylor23@example.com,WA,2026-08-01,3,394.32
+1029,Liam Brown,liam.brown5@example.com,TAS,2026-02-04,2,259.51
+1041,Ella Williams,ella.williams66@example.com,VIC,2026-01-30,3,38.92
+1109,Ethan Brown,unknown,NT,2026-04-21,5,363.67
+1156,Zoe Johnson,zoe.johnson86@example.com,NSW,2026-05-11,8,451.1
+1157,James Williams,james.williams57@example.com,TAS,2026-02-07,10,153.08
+1026,Ella Young,ella.young28@example.com,WA,2026-08-05,5,202.5
+1024,  sophie jones,sophie.jones94@example.com,NT,2026-02-13,2,489.1
+1185,Ella Wilson,,NSW,2026-08-23,1,499.3
+1148,Olivia Walker,olivia.walker53@example.com,Queensland,2026-03-15,2,237.4
+1082,Liam Brown,liam.brown50@example.com,NSW,2026-08-04,10,193.29
+1040,  james smith,james.smith8@example.com,NSW,2026-06-10,10,241.01
+1169,Zoe White,zoe.white82@example.com,TAS,2026-07-15,2,339.04
+1048,Noah King,noah.king34@example.com,VIC,2026-03-10,2,372.5
+1095,Lucas Jones,lucas.jones88@example.com,VIC,2026-06-04,0,392.4
+1155,Ruby White,ruby.white64@example.com,QLD,2026-05-04,4,233.27
+1044,Isla Brown,isla.brown51@example.com,QLD,2026-05-16,5,231.33
+1139,Mia Johnson,mia.johnson66@example.com,SA,2026-05-30,7,418.19
+1004,Grace White,grace.white1@example.com,QLD,2026-05-23,7,173.42
+1106,Lucas Wilson,,TAS,2026-07-08,7,498.33
+1054,Jack Taylor,jack.taylor46@example.com,WA,2026-01-21,4,335.13
+1134,Olivia Lee,olivia.lee53@example.com,NSW,2026-08-25,4,261.63
+1181,Ethan Jones,ethan.jones17@example.com,NSW,2026-01-14,6,396.04
+1179,James Brown,james.brown30@example.com,TAS,2026-04-21,3,395.38
+1186,Ruby Nguyen,ruby.nguyen63@example.com,NT,2026-02-25,2,450.14
+1050,Zoe Martin,zoe.martin33@example.com,NSW,2026-09-08,2,318.97
+1081,  chloe jones,chloe.jones53@example.com,TAS,2026-08-01,9,235.63
+1035,Lucas Young,lucas.young57@example.com,VIC,2026-02-08,1,327.81
+1008,Ava Smith,ava.smith99@example.com,SA,2026-04-27,2,
+1111, Ethan Wilson  ,ethan.wilson91@example.com,QLD,2026-01-08,5,27.53
+1092,Noah White,noah.white60@example.com,SA,2026-04-22,6,88.06
+1084,James Hall,james.hall63@example.com,WA,2026-04-23,5,220.74
+1177,Chloe Jones,chloe.jones12@example.com,WA,2026-08-21,10,485.69
+1182,Lucas White,lucas.white3@example.com,QLD,2026-06-15,5,30.94
+1090,Henry Brown,henry.brown84@example.com, NSW ,2026-02-05,1,475.06
+1009,Noah Nguyen,noah.nguyen59@example.com,TAS,2026-05-23,3,188.24
+1014,Isla Brown,missing@,NT,2026-09-13,3,136.12
+1060,Ava Hall,ava.hall45@example.com,ACT,2026-05-23,9,168.92
+1172,Liam Wilson,liam.wilson15@example.com,VIC,2026-09-10,4,444.19
+1132,Jack Lee,jack.lee98@example.com,NSW,2026-07-25,8,48.59
+1018, Ruby White  ,ruby.white68@example.com,SA,2026-08-28,9,431.09
+1073,Ava Johnson,ava.johnson81@example.com,WA,2026-08-01,7,249.72
+1176,  henry jones,henry.jones70@example.com,TAS,2026-07-08,1,202.08
+1135,Max Hall,max.hall81@example.com,NT,2026-09-13,1,105.76
+1168,Ruby Smith,ruby.smith69@example.com,VIC,2026-05-16,8,187.45
+1184,Henry Martin,henry.martin58@example.com,Western Australia,2026-02-25,10,26.47
+1064,James Lee,james.lee47@example.com,ACT,2026-04-11,2,474.69
+1055,Henry Hall,henry.hall80@example.com,Queensland,2026-07-28,4,432.98
+1108,Lucas Jones,lucas.jones41@example.com,VIC,2026-04-09,9,475.68
+1051,Zoe Smith,zoe.smith43@example.com,QLD,2026-01-02,5,84.98
+1044,Isla Brown,isla.brown51@example.com,QLD,2026-05-16,5,231.33
+1059,Lucas Brown,lucas.brown85@example.com,WA,2026-01-13,7,167.49
+1049,Mia Wilson,mia.wilson78@example.com,WA,2026-05-25,6,105.78
+1089,Leo Wilson,leo.wilson61@example.com,NSW,2026-02-11,9,30.78
+1022,  mia taylor,mia.taylor70@example.com,NSW,2026-03-24,10,165.46
+1058,Liam Young,liam.young29@example.com,Western Australia,2026-08-29,8,178.08
+1161,Liam King,liam.king37@example.com,WA,2026-09-12,10,401.96
+1146,Ruby Nguyen,ruby.nguyen64@example.com,NSW,2026-03-19,3,253.63
+1130,Sophie Nguyen,sophie.nguyen12@example.com,nt,2026-09-09,6,207.13
+1038,Ruby Wilson,ruby.wilson37@example.com,ACT,2026-08-21,9,332.63
+1158,Leo Walker,leo.walker59@example.com,SA,2026-05-09,4,499.69
+1100,Lucas Young,lucas.young36@example.com,NT,2026-02-14,4,376.49
+1002,James Jones,james.jones5@example.com,NSW,2026-08-05,2,113.23
+1053,Mia Martin,mia.martin48@example.com,QLD,2026-01-19,7,68.09
+1150,James Nguyen,james.nguyen81@example.com,NT,2026-06-12,9,
+1131,Isla Lee,isla.lee21@example.com,TAS,2026-02-23,7,348.37
+1152,Noah Johnson,noah.johnson89@example.com,SA,2026-03-27,0,27.77
+1104,Ava Brown,ava.brown63@example.com,WA,2026-07-28,8,324.72
+1100,Lucas Young,lucas.young36@example.com,NT,2026-02-14,4,376.49
+1117,Max Brown,max.brown49@example.com,NT,2026-09-25,8,152.19
+1088,Chloe Johnson,chloe.johnson44@example.com,ACT,2026-06-17,5,377.24
+1075,Ella Johnson,ella.johnson72@example.com,WA,2026-01-26,2,230.95
+1122, Jack Walker  ,jack.walker10@example.com,WA,2026-08-21,5,394.97
+1043,Max Smith,max.smith54@example.com,TAS,2026-02-11,5,106.11
+1021,Ella King,ella.king81@example.com,SA,2026-02-24,9,306.44
+1189,Leo Jones,leo.jones84@example.com,WA,2026-02-28,0,228.52
+1072,Chloe Williams,chloe.williams6@example.com,WA,2026-01-13,-1,307.58
+1107,James Taylor,james.taylor90@example.com,NT,2026-06-30,5,156.78
+1015,Lucas Walker,lucas.walker96@example.com,ACT,2026-05-15,10,202.7
+1093,Max Walker,max.walker21@example.com,SA,2026-02-28,2,291.45
+1180, Max Smith  ,max.smith19@example.com,QLD,2026-05-22,9,129.07
+1103,Max Walker,max.walker72@example.com,NSW,2026-05-22,9,474.29
