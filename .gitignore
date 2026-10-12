@@ -3,4 +3,5 @@
 secrets/
 __pycache__/
 upload/
-outputs/
+/outputs/
+/evidence/
