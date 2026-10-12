@@ -2,7 +2,7 @@
 
 I tested Rhombus AI as a scheduled ETL job: a CSV file in Amazon S3, a cleaning pipeline built with the Rhombus AI Builder, output to Google Cloud Storage (GCS), running every 15 minutes. I then sent it 7 kinds of changed ("drifted") input and checked what Rhombus did, what reached GCS, and whether the logs, the chatbot and the schedule helped.
 
-**Demo video:** [add link]
+**Demo video:** https://youtu.be/fjU45LaGVVc
 
 ## Top 3 findings
 
